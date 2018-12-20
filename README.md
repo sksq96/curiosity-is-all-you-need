@@ -1,2 +1,2 @@
 
-### A Model based Curious Reinforcement Learning agent 
+### Curiosity Is All You Need
