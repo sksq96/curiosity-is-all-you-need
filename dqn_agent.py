@@ -2,7 +2,7 @@ import numpy as np
 import random
 from collections import namedtuple, deque
 
-from model import Network
+from model import Network, StateRepesentation
 
 import torch
 import torch.nn.functional as F
@@ -31,6 +31,7 @@ class Agent():
         # Q-Network
         self.network_local = Network(action_size, state_size, h_size, seed).to(device)
         self.network_target = Network(action_size, state_size, h_size, seed).to(device)
+        self.random_target = StateRepesentation().to(device)
         self.optimizer = optim.Adam(self.network_local.parameters(), lr=LR)
 
         # Replay memory
@@ -81,6 +82,10 @@ class Agent():
         # Q-Learning
         # Get max predicted Q values (for next states) from target model
         Q_targets_next, _ = self.network_target(next_observation)
+        
+        # DO NOT BACKPROP
+        with torch.no_grad():
+            next_state_fixed = self.random_target(next_observation)
 
         Q_targets_next.detach().max(1)[0].unsqueeze(1)
         # Compute Q targets for current states
@@ -91,11 +96,12 @@ class Agent():
         Q_expected.gather(1, actions)
 
         # Compute Q loss
-        loss = F.mse_loss(Q_expected, Q_targets)
-        
+        bellman_loss = F.mse_loss(Q_expected, Q_targets)
         
         # Self Supervision
-        # TODO
+        fowrard_prediction_loss = F.mse_loss(next_state_predicted, next_state_fixed)
+
+        loss = fowrard_prediction_loss + next_state_fixed
         
         # Minimize the loss
         self.optimizer.zero_grad()
