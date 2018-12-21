@@ -1,2 +1,2 @@
 
-### A Model based Curious Reinforcement Learning agent 
+### A Curious Model Is All You Need
