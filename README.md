@@ -10,5 +10,5 @@ Curiosity is a type of dense intrinsic reward function which uses future predict
 
 ### Details
 
-[Link to poster](resources/Curiosity is All You Need  - Poster.pdf)
+[Link to poster](resources/poster.pdf)
 
