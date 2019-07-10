@@ -1,4 +1,4 @@
-### A Curious Model Is All You Need
+### Curiosity Is All You Need
 
 Curiosity is a type of dense intrinsic reward function which uses future prediction error as reward signal. 
 
